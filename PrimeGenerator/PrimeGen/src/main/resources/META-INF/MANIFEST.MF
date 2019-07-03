@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Built-By: Dublin
+Build-Jdk: 1.8.0_192
+Created-By: Maven Integration for Eclipse
+Main-Class: com.dare.adekunle.primegen.cli.PrimeGeneratorCLI

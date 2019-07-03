@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+
+	<p:dialog id="primeLogViewDlg" widgetVar="primeLogViewDialog" modal="true" resizable="false" 
+			appendTo="@(body)" header="Prime Log" fitViewport="true" closeOnEscape="true" closable="true"
+			responsive="true" showEffect="fade" hideEffect="fade" onHide="$('.primeLogCancelButton').click();">
+
+		<h:form id="primeLogViewForm">
+			<h:panelGroup layout="block" style="clear:both;float:right;margin:1em .5em 1em 0">
+				<p:commandButton value="OK" icon="fa fa-check" oncomplete="PF('primeLogViewDialog').hide();" />
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>
+</html>

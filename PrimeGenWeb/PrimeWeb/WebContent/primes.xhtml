@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" 
+		xmlns:p="http://primefaces.org/ui" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+		xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Prime Generator</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+    </h:head>
+
+    <h:body style="background-color:lightyellow;font-family:sans-serif">
+        <center> 
+            <p:growl globalOnly="true" id="successGrowl" severity="info,warn" 
+                     showDetail="true" showSummary="true" redisplay="false" life="3000"/>
+            <p:growl globalOnly="true" id="errorGrowl" severity="error,fatal"
+                     showDetail="true" showSummary="true" redisplay="false" sticky="true"/>
+                     
+            <p:ajaxStatus onstart="PF('status').show()" oncomplete="PF('status').hide()"/>
+
+            <p:dialog closeOnEscape="true" showHeader="false" widgetVar="status" modal="true" resizable="false" 
+                      responsive="true" style="padding:0">
+                <i class="fa fa-cog fa-spin"></i>
+            </p:dialog>
+        </center>
+
+        <h:panelGroup layout="block" styleClass="contentPanel">  
+
+            <h:form id="primesForm">
+
+			<h3 style="margin:0;margin-top:1em;margin-bottom:2em">Prime Number Generator</h3>
+
+			<p:panelGrid id="primeGrid" columns="4" layout="grid" styleClass="ui-panelgrid-blank"
+						style="max-width:30em" >
+				<p:outputLabel for="lowerSpinner" value="Lower limit">
+					<p:spinner id="lowerSpinner"  value="#{primeBean.lowerLimit}" size="8" 
+							min="0" max="10000000" title="Min: 0, Max: 10,000,000" >
+							<p:ajax event="change" process="@this,upperSpinner" 
+									update="upperSpinner" global="false"/>
+					</p:spinner>
+				</p:outputLabel>
+				
+				<p:outputLabel for="upperSpinner" value="Upper limit">
+					<p:spinner id="upperSpinner" value="#{primeBean.upperLimit}" size="8"
+							min="#{primeBean.lowerLimit}" max="10000000" title="Min: Lower limit, Max: 10,000,000" />
+				</p:outputLabel>
+				
+				<p:outputLabel for="strategyMenu" value="Strategy" >
+					<p:selectOneMenu id="strategyMenu" value="#{primeBean.strategy}" 
+						style="min-width:5em">				
+						<f:selectItem itemLabel="Fast" itemValue="Fast"/>
+						<f:selectItem itemLabel="Moderate" itemValue="Moderate"/>
+						<f:selectItem itemLabel="Slow" itemValue="Slow"/>
+					</p:selectOneMenu>
+				</p:outputLabel>
+				
+				<h:panelGroup layout="block" style="padding-top:1em;float:left">
+					<p:commandButton value="Generate" title="Generate prime numbers" 
+								action="#{primeBean.generatePrimesAction}"
+								process="@form" update="@form" icon="fa fa-cog" style="float:left"/>
+				</h:panelGroup>
+			</p:panelGrid>
+			
+			<h:outputText value="Result: #{primeBean.generatedPrimes}" 
+				style="display:block;margin-top:2em;font-weight:bold;color:green;margin-left:.7em;font-size:larger"/>
+				
+                <h3 style="margin:0;margin-top:2em">Prime Number Request Log</h3>
+                
+                <div style="margin-top:.5em">
+                    <p:dataTable id="datalist" value="#{primeBean.primeLogs}" var="item" 
+                    		style="clear:both;margin-bottom:.5em" 
+                    		sortBy="#{item.requestTimestamp}" sortOrder="DESCENDING"
+                            rowKey="#{item.id}" rows="0" reflow="true">
+
+                         <p:column headerText="Date" width="20%" sortBy="#{item.requestTimestamp}">
+                            <h:outputText value="#{item.requestTimestamp}">
+                                <f:convertDateTime pattern="dd-MM-yyyy h:mm a" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="Lower Limit" width="10%" sortBy="#{item.lowerLimit}">
+                           <h:outputText value="#{item.lowerLimit}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Upper Limit" width="15%" sortBy="#{item.upperLimit}">
+                           <h:outputText value="#{item.upperLimit}"/>
+                        </p:column>
+                         
+						 <p:column headerText="Strategy" width="20%" sortBy="#{item.strategy}">
+                           <h:outputText value="#{item.strategy}"/>
+                        </p:column>
+                        
+                        <p:column headerText="# of Primes" width="15%" sortBy="#{item.numberOfPrimes}">
+                           <h:outputText value="#{item.numberOfPrimes}"/>
+                        </p:column>
+
+ 						<p:column headerText="Duration" width="20%" sortBy="#{item.duration}">
+                           <h:outputText value="#{item.duration}ms"/>
+                        </p:column>
+                       
+                    </p:dataTable>
+                   
+                </div>
+
+            </h:form>
+
+            <ui:include src="primeLogView.xhtml"/>
+            
+        </h:panelGroup>
+  </h:body>
+  </html>
