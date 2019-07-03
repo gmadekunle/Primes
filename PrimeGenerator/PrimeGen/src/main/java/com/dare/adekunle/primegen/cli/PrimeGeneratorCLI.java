@@ -53,8 +53,12 @@ public class PrimeGeneratorCLI {
 
 				System.out.println();
 				System.out.println("Enter x to exit or any other key to continue");
-				exit = "x".equalsIgnoreCase(scanner.next().toLowerCase());
-				
+				String input = scanner.next();
+				if(input != null) {
+					exit = "x".equalsIgnoreCase(input.toLowerCase());
+					if(exit)
+					System.out.println("Ended");
+				}
 				} while (!exit);
 			}
 		
